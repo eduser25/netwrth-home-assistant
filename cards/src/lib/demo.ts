@@ -35,8 +35,53 @@ const DEFS: Def[] = [
   [9, "Car loan", "Harbor Credit Union", "loan", null, -11041.33, 0, -14],
 ];
 
+type TxnDef = [number, number, number, string, string];
+// [account, day, amount, theme, merchant]
+const TXN_DEFS: TxnDef[] = [
+  [1, 1, 2200, "housing", "Maple St Apartments"],
+  [1, 3, 11.99, "subscriptions", "Spotify"],
+  [1, 5, -3100, "income", "Acme Payroll"],
+  [1, 10, 15.49, "subscriptions", "Netflix"],
+  [1, 18, 145.3, "utilities", "City Power & Gas"],
+  [1, 19, -3100, "income", "Acme Payroll"],
+  [7, 2, 84.12, "groceries", "Hillside Market"],
+  [7, 6, 42.5, "dining", "Blue Fern Cafe"],
+  [7, 9, 129.99, "shopping", "Northlane Outfitters"],
+  [7, 13, 91.4, "groceries", "Hillside Market"],
+  [7, 16, -650, "debt", "Payment - Thank You"],
+  [7, 20, 36.2, "dining", "Taqueria El Sol"],
+  [7, 25, 88.3, "groceries", "Hillside Market"],
+  [7, 4, 58.4, "transport", "Ridgeline Fuel"],
+  [7, 11, 27.9, "health", "Corner Pharmacy"],
+  [7, 22, 64.8, "dining", "Lantern House"],
+  [7, 27, 26.6, "shopping", "Paper & Twine"],
+  [8, 4, 210.45, "travel", "Skyway Airlines"],
+  [8, 14, -180, "debt", "Payment - Thank You"],
+];
+
+// Credit cards follow their own transactions instead of a random walk: the
+// month's purchases step the debt up and the payment drops it, the same
+// pattern every month, walked backwards from today's balance so "today"
+// still matches DEFS. Balance is negative; undoing a purchase adds it back,
+// undoing a payment takes it away again.
+function creditSeries(def: Def) {
+  const [id, , , , , end] = def;
+  const monthly = TXN_DEFS.filter(([acct]) => acct === id);
+  const pts: { ts: string; balance: string }[] = [];
+  let v = end;
+  for (let i = 0; i <= DAYS; i++) {
+    const d = new Date(END - i * DAY);
+    pts.push({ ts: d.toISOString(), balance: v.toFixed(2) });
+    const day = d.getUTCDate();
+    for (const [, tday, tv] of monthly) if (tday === day) v += tv;
+    v = Math.min(0, v);
+  }
+  return { account_id: id, points: pts.reverse() };
+}
+
 function series(def: Def) {
   const [id, , , kind, , end, vol, drift] = def;
+  if (kind === "credit") return creditSeries(def);
   const rand = rng(id * 7919);
   // Walk backwards from the end balance so "today" always matches.
   const pts: { ts: string; balance: string }[] = [];
@@ -93,25 +138,6 @@ const STREAM_DEFS: StreamDef[] = [
   ["PAYROLL", "Acme Payroll", "income", "biweekly", 5, 3100, true, true],
 ];
 
-type TxnDef = [number, number, number, string, string];
-// [account, day, amount, theme, merchant]
-const TXN_DEFS: TxnDef[] = [
-  [1, 1, 2200, "housing", "Maple St Apartments"],
-  [1, 3, 11.99, "subscriptions", "Spotify"],
-  [1, 5, -3100, "income", "Acme Payroll"],
-  [1, 10, 15.49, "subscriptions", "Netflix"],
-  [1, 18, 145.3, "utilities", "City Power & Gas"],
-  [1, 19, -3100, "income", "Acme Payroll"],
-  [7, 2, 84.12, "groceries", "Hillside Market"],
-  [7, 6, 42.5, "dining", "Blue Fern Cafe"],
-  [7, 9, 129.99, "shopping", "Northlane Outfitters"],
-  [7, 13, 91.4, "groceries", "Hillside Market"],
-  [7, 16, -650, "debt", "Payment - Thank You"],
-  [7, 20, 36.2, "dining", "Taqueria El Sol"],
-  [7, 25, 88.3, "groceries", "Hillside Market"],
-  [8, 4, 210.45, "travel", "Skyway Airlines"],
-  [8, 14, -180, "debt", "Payment - Thank You"],
-];
 
 type Sub = (ev: { data: { entry_id: string } }) => void;
 
