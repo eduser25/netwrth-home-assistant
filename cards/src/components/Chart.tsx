@@ -120,6 +120,11 @@ export default function Chart({
       const total = sumRow(r, accounts);
       return { ts: r.ts, total: masked ? rel(total, base) : total };
     });
+    // Colour follows height: green at the top of the drawn line, blue at the
+    // bottom (objectBoundingBox, relative to the path). A flat line has no
+    // vertical extent and the gradient would not paint, so it stays solid.
+    const totals = data.map((d) => d.total).filter((x): x is number => x != null && !isNaN(x));
+    const flat = totals.length > 0 && Math.max(...totals) === Math.min(...totals);
     return (
       <ResponsiveContainer width="100%" height={340}>
         <AreaChart data={data} margin={MARGIN}>
@@ -128,9 +133,9 @@ export default function Chart({
               <stop offset="0%" stopColor={ACCENT} stopOpacity={0.22} />
               <stop offset="100%" stopColor={ACCENT} stopOpacity={0} />
             </linearGradient>
-            <linearGradient id="nwline" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%" stopColor={ACCENT} />
-              <stop offset="100%" stopColor={GREEN} />
+            <linearGradient id="nwline" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor={GREEN} />
+              <stop offset="100%" stopColor={ACCENT} />
             </linearGradient>
           </defs>
           <CartesianGrid stroke={GRID} strokeDasharray="3 3" />
@@ -144,7 +149,7 @@ export default function Chart({
           <Area
             type="monotone"
             dataKey="total"
-            stroke="url(#nwline)"
+            stroke={flat ? ACCENT : "url(#nwline)"}
             strokeWidth={2.5}
             fill="url(#nw)"
             // Endpoint glow on the last point only; other points draw nothing.
