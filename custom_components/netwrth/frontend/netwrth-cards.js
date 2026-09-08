@@ -20577,7 +20577,7 @@ function gX({
   const c = r === "1d" || r === "1w", f = (j) => ri(j, c), d = (j, w) => w !== 0 ? (j - w) / Math.abs(w) : null, h = u ? oC : or, y = (j) => o ? zu(j) : h(j), v = (j) => o ? zu(j) : or(j, !0);
   if (n === "flow") {
     const j = L$(e, t, r), w = (C) => o ? C.toFixed(2) : _b(C), T = (C) => o ? C.toFixed(1) : h(C);
-    return /* @__PURE__ */ N.jsx(Zs, { width: "100%", height: 340, children: /* @__PURE__ */ N.jsxs(vX, { data: j, margin: sf, children: [
+    return /* @__PURE__ */ N.jsx(Zs, { width: "100%", height: "100%", children: /* @__PURE__ */ N.jsxs(vX, { data: j, margin: sf, children: [
       /* @__PURE__ */ N.jsx(ju, { stroke: Oo, strokeDasharray: "3 3" }),
       /* @__PURE__ */ N.jsx(cr, { dataKey: "ts", tickFormatter: (C) => ri(C), tick: wa, minTickGap: 40 }),
       /* @__PURE__ */ N.jsx(sr, { tickFormatter: (C) => T(C), tick: wa, width: cf(T, j.map((C) => C.flow)) }),
@@ -20598,7 +20598,7 @@ function gX({
       const $ = Vn(R, t);
       return { ts: R.ts, total: o ? d($, j) : $ };
     }), T = w.map((R) => R.total).filter((R) => R != null && !isNaN(R)), C = T.length > 0 && Math.max(...T) === Math.min(...T);
-    return /* @__PURE__ */ N.jsx(Zs, { width: "100%", height: 340, children: /* @__PURE__ */ N.jsxs(yX, { data: w, margin: sf, children: [
+    return /* @__PURE__ */ N.jsx(Zs, { width: "100%", height: "100%", children: /* @__PURE__ */ N.jsxs(yX, { data: w, margin: sf, children: [
       /* @__PURE__ */ N.jsxs("defs", { children: [
         /* @__PURE__ */ N.jsxs("linearGradient", { id: "nw", x1: "0", y1: "0", x2: "0", y2: "1", children: [
           /* @__PURE__ */ N.jsx("stop", { offset: "0%", stopColor: Ou, stopOpacity: 0.22 }),
@@ -20655,7 +20655,7 @@ function gX({
         debt: d(Y, w.debt)
       } : { ts: C.ts, retirement: R, other: $, debt: Y };
     });
-    return /* @__PURE__ */ N.jsx(Zs, { width: "100%", height: 340, children: /* @__PURE__ */ N.jsxs(pX, { data: T, margin: sf, children: [
+    return /* @__PURE__ */ N.jsx(Zs, { width: "100%", height: "100%", children: /* @__PURE__ */ N.jsxs(pX, { data: T, margin: sf, children: [
       /* @__PURE__ */ N.jsx(ju, { stroke: Oo, strokeDasharray: "3 3" }),
       /* @__PURE__ */ N.jsx(cr, { dataKey: "ts", tickFormatter: f, tick: wa, minTickGap: 40 }),
       /* @__PURE__ */ N.jsx(
@@ -20715,7 +20715,7 @@ function gX({
       ] })
     ] });
   };
-  return /* @__PURE__ */ N.jsx(Zs, { width: "100%", height: 340, children: /* @__PURE__ */ N.jsxs(mX, { data: x, stackOffset: "sign", margin: sf, children: [
+  return /* @__PURE__ */ N.jsx(Zs, { width: "100%", height: "100%", children: /* @__PURE__ */ N.jsxs(mX, { data: x, stackOffset: "sign", margin: sf, children: [
     /* @__PURE__ */ N.jsx(ju, { stroke: Oo, strokeDasharray: "3 3" }),
     /* @__PURE__ */ N.jsx(cr, { dataKey: "ts", tickFormatter: (j) => ri(j), tick: wa, minTickGap: 40 }),
     /* @__PURE__ */ N.jsx(sr, { tickFormatter: b, tick: wa, width: cf(b, A) }),
@@ -20782,7 +20782,7 @@ function MN({
     y && /* @__PURE__ */ N.jsx("div", { className: "error-box", children: y }),
     !y && (!f || !d) && /* @__PURE__ */ N.jsx("div", { className: "status", children: "Loading…" }),
     !y && f && d && _.length === 0 && /* @__PURE__ */ N.jsx("div", { className: "status", children: "No data for this view yet." }),
-    !y && f && d && _.length > 0 && /* @__PURE__ */ N.jsx(
+    !y && f && d && _.length > 0 && /* @__PURE__ */ N.jsx("div", { className: "chart-fill", children: /* @__PURE__ */ N.jsx(
       gX,
       {
         rows: _,
@@ -20792,7 +20792,7 @@ function MN({
         masked: h,
         compact: t.compact !== !1
       }
-    )
+    ) })
   ] });
 }
 var mb = { exports: {} }, wu = {}, gb = { exports: {} }, bb = {};
@@ -31097,6 +31097,9 @@ function $X(e) {
   :host {
     display: block;
     position: relative;
+    /* Fill the cell HA gives us (sections view rows); in a masonry view the
+       cell is auto-height and this resolves to content height. */
+    height: 100%;
     ${e === "ha" ? RX : NX}
   }
   * { box-sizing: border-box; }
@@ -31120,8 +31123,15 @@ function $X(e) {
   }
   .overlay::backdrop { display: none; }
   .overlay > * { pointer-events: auto; }
+  .mount { height: 100%; }
   .card {
     position: relative;
+    /* Column layout so a flexible chart can take the remaining height when
+       the card is resized, instead of overflowing a fixed pixel height. */
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 0;
     /* Own stacking context so the ambient layer's z-index -1 sits between
        the card background and the content instead of under the page. */
     isolation: isolate;
@@ -31146,6 +31156,13 @@ function $X(e) {
     border-radius: inherit;
     overflow: hidden;
     pointer-events: none;
+  }
+  /* The chart area: 320px on its own, grows to fill a taller cell, shrinks
+     (and lets Recharts re-measure) in a shorter one. */
+  .chart-fill {
+    flex: 1 1 320px;
+    min-height: 0;
+    position: relative;
   }
   .ambient::after {
     content: "";
@@ -31564,6 +31581,12 @@ function Ei(e) {
     getCardSize() {
       return e.size;
     }
+    // Sections view: the default cell is the masonry size, and the card can
+    // be dragged down to three rows before the content stops fitting. The
+    // chart area flexes to whatever height the cell gives it.
+    getGridOptions() {
+      return { columns: "full", rows: e.size, min_rows: 3, min_columns: 6 };
+    }
     static getConfigElement() {
       return document.createElement(`${e.tag}-editor`);
     }
@@ -31574,7 +31597,7 @@ function Ei(e) {
       if (!this._config || !this._hass || !this.isConnected) return;
       this.shadowRoot || this.attachShadow({ mode: "open" });
       const c = this.shadowRoot;
-      this._style || (this._style = document.createElement("style"), c.appendChild(this._style)), this._style.textContent = $X(this._config.theme ?? "netwrth"), this._mount || (this._mount = document.createElement("div"), c.appendChild(this._mount), this._overlay = document.createElement("div"), this._overlay.className = "overlay", this._overlay.setAttribute("popover", "manual"), c.appendChild(this._overlay), this._root = OX.createRoot(this._mount));
+      this._style || (this._style = document.createElement("style"), c.appendChild(this._style)), this._style.textContent = $X(this._config.theme ?? "netwrth"), this._mount || (this._mount = document.createElement("div"), this._mount.className = "mount", c.appendChild(this._mount), this._overlay = document.createElement("div"), this._overlay.className = "overlay", this._overlay.setAttribute("popover", "manual"), c.appendChild(this._overlay), this._root = OX.createRoot(this._mount));
       const f = e.component, d = this._config.demo ? PX() : this._hass;
       this._root.render(
         /* @__PURE__ */ N.jsx(W0.Provider, { value: this._overlay ?? null, children: /* @__PURE__ */ N.jsx(f, { hass: d, config: this._config }, JSON.stringify(this._config)) })

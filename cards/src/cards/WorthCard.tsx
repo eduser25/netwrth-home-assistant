@@ -87,14 +87,16 @@ export default function WorthCard({
         <div className="status">No data for this view yet.</div>
       )}
       {!error && overview && series && rows.length > 0 && (
-        <Chart
-          rows={rows}
-          accounts={accounts}
-          mode={mode}
-          range={range}
-          masked={masked}
-          compact={config.compact !== false}
-        />
+        <div className="chart-fill">
+          <Chart
+            rows={rows}
+            accounts={accounts}
+            mode={mode}
+            range={range}
+            masked={masked}
+            compact={config.compact !== false}
+          />
+        </div>
       )}
     </div>
   );

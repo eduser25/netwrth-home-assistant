@@ -93,7 +93,7 @@ export default function Chart({
     const fmtFlow = (v: number) => (masked ? v.toFixed(2) : signedMoney(v));
     const fmtYFlow = (v: number) => (masked ? v.toFixed(1) : axisMoney(v));
     return (
-      <ResponsiveContainer width="100%" height={340}>
+      <ResponsiveContainer width="100%" height="100%">
         <BarChart data={data} margin={MARGIN}>
           <CartesianGrid stroke={GRID} strokeDasharray="3 3" />
           <XAxis dataKey="ts" tickFormatter={(ts) => shortDate(ts as number)} tick={axisStyle} minTickGap={40} />
@@ -126,7 +126,7 @@ export default function Chart({
     const totals = data.map((d) => d.total).filter((x): x is number => x != null && !isNaN(x));
     const flat = totals.length > 0 && Math.max(...totals) === Math.min(...totals);
     return (
-      <ResponsiveContainer width="100%" height={340}>
+      <ResponsiveContainer width="100%" height="100%">
         <AreaChart data={data} margin={MARGIN}>
           <defs>
             <linearGradient id="nw" x1="0" y1="0" x2="0" y2="1">
@@ -194,7 +194,7 @@ export default function Chart({
         : { ts: r.ts, retirement, other, debt };
     });
     return (
-      <ResponsiveContainer width="100%" height={340}>
+      <ResponsiveContainer width="100%" height="100%">
         <LineChart data={data} margin={MARGIN}>
           <CartesianGrid stroke={GRID} strokeDasharray="3 3" />
           <XAxis dataKey="ts" tickFormatter={fmtX} tick={axisStyle} minTickGap={40} />
@@ -291,7 +291,7 @@ export default function Chart({
   };
 
   return (
-    <ResponsiveContainer width="100%" height={340}>
+    <ResponsiveContainer width="100%" height="100%">
       <ComposedChart data={data} stackOffset="sign" margin={MARGIN}>
         <CartesianGrid stroke={GRID} strokeDasharray="3 3" />
         <XAxis dataKey="ts" tickFormatter={(ts) => shortDate(ts as number)} tick={axisStyle} minTickGap={40} />

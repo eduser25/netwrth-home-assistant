@@ -49,6 +49,9 @@ export function cardCss(mode: ThemeMode): string {
   :host {
     display: block;
     position: relative;
+    /* Fill the cell HA gives us (sections view rows); in a masonry view the
+       cell is auto-height and this resolves to content height. */
+    height: 100%;
     ${mode === "ha" ? HA_TOKENS : NETWRTH_TOKENS}
   }
   * { box-sizing: border-box; }
@@ -72,8 +75,15 @@ export function cardCss(mode: ThemeMode): string {
   }
   .overlay::backdrop { display: none; }
   .overlay > * { pointer-events: auto; }
+  .mount { height: 100%; }
   .card {
     position: relative;
+    /* Column layout so a flexible chart can take the remaining height when
+       the card is resized, instead of overflowing a fixed pixel height. */
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 0;
     /* Own stacking context so the ambient layer's z-index -1 sits between
        the card background and the content instead of under the page. */
     isolation: isolate;
@@ -98,6 +108,13 @@ export function cardCss(mode: ThemeMode): string {
     border-radius: inherit;
     overflow: hidden;
     pointer-events: none;
+  }
+  /* The chart area: 320px on its own, grows to fill a taller cell, shrinks
+     (and lets Recharts re-measure) in a shorter one. */
+  .chart-fill {
+    flex: 1 1 320px;
+    min-height: 0;
+    position: relative;
   }
   .ambient::after {
     content: "";

@@ -63,6 +63,13 @@ export function defineCard(def: CardDef): void {
       return def.size;
     }
 
+    // Sections view: the default cell is the masonry size, and the card can
+    // be dragged down to three rows before the content stops fitting. The
+    // chart area flexes to whatever height the cell gives it.
+    getGridOptions() {
+      return { columns: "full", rows: def.size, min_rows: 3, min_columns: 6 };
+    }
+
     static getConfigElement() {
       return document.createElement(`${def.tag}-editor`);
     }
@@ -82,6 +89,7 @@ export function defineCard(def: CardDef): void {
       this._style.textContent = cardCss((this._config.theme as ThemeMode) ?? "netwrth");
       if (!this._mount) {
         this._mount = document.createElement("div");
+        this._mount.className = "mount";
         shadow.appendChild(this._mount);
         // Sibling of the card, outside its stacking context: PIN pad and
         // hover bubbles portal here so they float over neighbouring cards.
