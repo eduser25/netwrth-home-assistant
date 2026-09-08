@@ -16,6 +16,9 @@ export type CardDef = {
   schema: SchemaField[];
   stub: Record<string, unknown>;
   size: number;
+  // Fill the grid cell and let the body flex (chart cards). Everything else
+  // keeps its content height, so a banner stays a banner when resized.
+  fill?: boolean;
 };
 
 // Wraps a React card component as a Lovelace custom element: shadow DOM for
@@ -63,10 +66,12 @@ export function defineCard(def: CardDef): void {
       return def.size;
     }
 
-    // Sections view: the default cell is the masonry size, and the card can
-    // be dragged down to three rows before the content stops fitting. The
-    // chart area flexes to whatever height the cell gives it.
+    // Sections view, chart cards only: the default cell is the masonry size
+    // and the card can be dragged down to three rows; the chart area flexes
+    // to whatever height the cell gives it. Other cards leave HA's own
+    // sizing alone (content height).
     getGridOptions() {
+      if (!def.fill) return {};
       return { columns: "full", rows: def.size, min_rows: 3, min_columns: 6 };
     }
 
@@ -89,7 +94,8 @@ export function defineCard(def: CardDef): void {
       this._style.textContent = cardCss((this._config.theme as ThemeMode) ?? "netwrth");
       if (!this._mount) {
         this._mount = document.createElement("div");
-        this._mount.className = "mount";
+        this._mount.className = def.fill ? "mount fill" : "mount";
+        if (def.fill) this.setAttribute("data-fill", "");
         shadow.appendChild(this._mount);
         // Sibling of the card, outside its stacking context: PIN pad and
         // hover bubbles portal here so they float over neighbouring cards.

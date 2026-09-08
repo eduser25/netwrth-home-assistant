@@ -49,9 +49,6 @@ export function cardCss(mode: ThemeMode): string {
   :host {
     display: block;
     position: relative;
-    /* Fill the cell HA gives us (sections view rows); in a masonry view the
-       cell is auto-height and this resolves to content height. */
-    height: 100%;
     ${mode === "ha" ? HA_TOKENS : NETWRTH_TOKENS}
   }
   * { box-sizing: border-box; }
@@ -75,15 +72,20 @@ export function cardCss(mode: ThemeMode): string {
   }
   .overlay::backdrop { display: none; }
   .overlay > * { pointer-events: auto; }
-  .mount { height: 100%; }
-  .card {
-    position: relative;
-    /* Column layout so a flexible chart can take the remaining height when
-       the card is resized, instead of overflowing a fixed pixel height. */
+  /* Chart cards fill the cell HA gives them (sections view rows) and lay
+     out as a column so the chart takes the remaining height when the card
+     is resized. In a masonry view the cell is auto-height and this resolves
+     to content height. Other cards keep their content height. */
+  :host([data-fill]) { height: 100%; }
+  .mount.fill { height: 100%; }
+  .mount.fill .card {
     display: flex;
     flex-direction: column;
     height: 100%;
     min-height: 0;
+  }
+  .card {
+    position: relative;
     /* Own stacking context so the ambient layer's z-index -1 sits between
        the card background and the content instead of under the page. */
     isolation: isolate;

@@ -125,6 +125,7 @@ defineCard({
   ],
   stub: { view: "all", range: "6m" },
   size: 6,
+  fill: true,
 });
 
 defineCard({
@@ -147,6 +148,7 @@ defineCard({
   ],
   stub: { range: "3m" },
   size: 6,
+  fill: true,
 });
 
 defineCard({

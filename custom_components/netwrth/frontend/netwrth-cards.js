@@ -31097,9 +31097,6 @@ function $X(e) {
   :host {
     display: block;
     position: relative;
-    /* Fill the cell HA gives us (sections view rows); in a masonry view the
-       cell is auto-height and this resolves to content height. */
-    height: 100%;
     ${e === "ha" ? RX : NX}
   }
   * { box-sizing: border-box; }
@@ -31123,15 +31120,20 @@ function $X(e) {
   }
   .overlay::backdrop { display: none; }
   .overlay > * { pointer-events: auto; }
-  .mount { height: 100%; }
-  .card {
-    position: relative;
-    /* Column layout so a flexible chart can take the remaining height when
-       the card is resized, instead of overflowing a fixed pixel height. */
+  /* Chart cards fill the cell HA gives them (sections view rows) and lay
+     out as a column so the chart takes the remaining height when the card
+     is resized. In a masonry view the cell is auto-height and this resolves
+     to content height. Other cards keep their content height. */
+  :host([data-fill]) { height: 100%; }
+  .mount.fill { height: 100%; }
+  .mount.fill .card {
     display: flex;
     flex-direction: column;
     height: 100%;
     min-height: 0;
+  }
+  .card {
+    position: relative;
     /* Own stacking context so the ambient layer's z-index -1 sits between
        the card background and the content instead of under the page. */
     isolation: isolate;
@@ -31581,11 +31583,12 @@ function Ei(e) {
     getCardSize() {
       return e.size;
     }
-    // Sections view: the default cell is the masonry size, and the card can
-    // be dragged down to three rows before the content stops fitting. The
-    // chart area flexes to whatever height the cell gives it.
+    // Sections view, chart cards only: the default cell is the masonry size
+    // and the card can be dragged down to three rows; the chart area flexes
+    // to whatever height the cell gives it. Other cards leave HA's own
+    // sizing alone (content height).
     getGridOptions() {
-      return { columns: "full", rows: e.size, min_rows: 3, min_columns: 6 };
+      return e.fill ? { columns: "full", rows: e.size, min_rows: 3, min_columns: 6 } : {};
     }
     static getConfigElement() {
       return document.createElement(`${e.tag}-editor`);
@@ -31597,7 +31600,7 @@ function Ei(e) {
       if (!this._config || !this._hass || !this.isConnected) return;
       this.shadowRoot || this.attachShadow({ mode: "open" });
       const c = this.shadowRoot;
-      this._style || (this._style = document.createElement("style"), c.appendChild(this._style)), this._style.textContent = $X(this._config.theme ?? "netwrth"), this._mount || (this._mount = document.createElement("div"), this._mount.className = "mount", c.appendChild(this._mount), this._overlay = document.createElement("div"), this._overlay.className = "overlay", this._overlay.setAttribute("popover", "manual"), c.appendChild(this._overlay), this._root = OX.createRoot(this._mount));
+      this._style || (this._style = document.createElement("style"), c.appendChild(this._style)), this._style.textContent = $X(this._config.theme ?? "netwrth"), this._mount || (this._mount = document.createElement("div"), this._mount.className = e.fill ? "mount fill" : "mount", e.fill && this.setAttribute("data-fill", ""), c.appendChild(this._mount), this._overlay = document.createElement("div"), this._overlay.className = "overlay", this._overlay.setAttribute("popover", "manual"), c.appendChild(this._overlay), this._root = OX.createRoot(this._mount));
       const f = e.component, d = this._config.demo ? PX() : this._hass;
       this._root.render(
         /* @__PURE__ */ N.jsx(W0.Provider, { value: this._overlay ?? null, children: /* @__PURE__ */ N.jsx(f, { hass: d, config: this._config }, JSON.stringify(this._config)) })
@@ -31760,7 +31763,8 @@ Ei({
     Ci
   ],
   stub: { view: "all", range: "6m" },
-  size: 6
+  size: 6,
+  fill: !0
 });
 Ei({
   tag: "netwrth-flow-card",
@@ -31781,7 +31785,8 @@ Ei({
     Ci
   ],
   stub: { range: "3m" },
-  size: 6
+  size: 6,
+  fill: !0
 });
 Ei({
   tag: "netwrth-stat-card",
