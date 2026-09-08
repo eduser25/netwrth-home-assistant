@@ -248,7 +248,7 @@ export default function BillsCard({
       {!error && !data && <div className="status">Loading…</div>}
       {!error && data && empty && <div className="status">No recurring activity this month.</div>}
       {!error && data && !empty && (
-        <>
+        <div className="body-fill">
           {(marks.length > 0 || pills.length > 0) && (
             <svg viewBox={`0 0 ${W} ${H}`} className="spend-cal-svg" role="img"
               aria-label="Recurring bills and income by day of month">
@@ -383,7 +383,7 @@ export default function BillsCard({
               ))}
             </div>
           )}
-        </>
+        </div>
       )}
     </div>
   );

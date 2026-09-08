@@ -134,6 +134,7 @@ export default function AccountsCard({
         <div className="status">No accounts.</div>
       )}
       {!error && overview && groups.length > 0 && (
+        <div className="body-scroll">
         <table>
           <tbody>
             {groups.map((g) => (
@@ -147,6 +148,7 @@ export default function AccountsCard({
             ))}
           </tbody>
         </table>
+        </div>
       )}
     </div>
   );

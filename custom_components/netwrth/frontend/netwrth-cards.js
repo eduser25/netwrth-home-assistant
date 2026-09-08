@@ -1046,7 +1046,7 @@ function E$({
     d && /* @__PURE__ */ N.jsx("div", { className: "error-box", children: d }),
     !d && !u && /* @__PURE__ */ N.jsx("div", { className: "status", children: "Loading…" }),
     !d && u && _.length === 0 && /* @__PURE__ */ N.jsx("div", { className: "status", children: "No accounts." }),
-    !d && u && _.length > 0 && /* @__PURE__ */ N.jsx("table", { children: /* @__PURE__ */ N.jsx("tbody", { children: _.map((S) => /* @__PURE__ */ N.jsx(
+    !d && u && _.length > 0 && /* @__PURE__ */ N.jsx("div", { className: "body-scroll", children: /* @__PURE__ */ N.jsx("table", { children: /* @__PURE__ */ N.jsx("tbody", { children: _.map((S) => /* @__PURE__ */ N.jsx(
       j$,
       {
         kind: S.kind,
@@ -1055,7 +1055,7 @@ function E$({
         deltas: b
       },
       S.kind
-    )) }) })
+    )) }) }) })
   ] });
 }
 function j$({
@@ -1282,7 +1282,7 @@ function R$({
     g && /* @__PURE__ */ N.jsx("div", { className: "error-box", children: g }),
     !g && !y && /* @__PURE__ */ N.jsx("div", { className: "status", children: "Loading…" }),
     !g && y && ne && /* @__PURE__ */ N.jsx("div", { className: "status", children: "No recurring activity this month." }),
-    !g && y && !ne && /* @__PURE__ */ N.jsxs(N.Fragment, { children: [
+    !g && y && !ne && /* @__PURE__ */ N.jsxs("div", { className: "body-fill", children: [
       (j.length > 0 || w.length > 0) && /* @__PURE__ */ N.jsxs(
         "svg",
         {
@@ -1534,7 +1534,7 @@ function z$({
       },
       G.id
     )) }),
-    !_ && g && Y.map(({ card: G, line: V, recon: z, spent: K, paid: ne, payments: H }) => {
+    /* @__PURE__ */ N.jsx("div", { className: "body-fill", children: !_ && g && Y.map(({ card: G, line: V, recon: z, spent: K, paid: ne, payments: H }) => {
       const ee = Math.max(
         1,
         ...V.map((he) => he.debt),
@@ -1728,7 +1728,7 @@ function z$({
           }
         )
       ] }, G.id);
-    }),
+    }) }),
     o && /* @__PURE__ */ N.jsx(fC, { children: /* @__PURE__ */ N.jsxs(
       "div",
       {
@@ -1864,7 +1864,7 @@ function B$({
     ] }),
     g && /* @__PURE__ */ N.jsx("div", { className: "error-box", children: g }),
     !g && !x && /* @__PURE__ */ N.jsx("div", { className: "status", children: "Loading…" }),
-    !g && x && /* @__PURE__ */ N.jsxs(N.Fragment, { children: [
+    !g && x && /* @__PURE__ */ N.jsxs("div", { className: "body-scroll", children: [
       t.show_stats !== !1 && /* @__PURE__ */ N.jsxs("div", { className: "spend-stats", children: [
         /* @__PURE__ */ N.jsxs("div", { className: "spend-stat", children: [
           /* @__PURE__ */ N.jsx("span", { className: "spend-stat-label", children: "Spent" }),
@@ -2110,28 +2110,30 @@ function G$({
     ] }),
     d && /* @__PURE__ */ N.jsx("div", { className: "error-box", children: d }),
     !d && !g && /* @__PURE__ */ N.jsx("div", { className: "status", children: "Loading…" }),
-    !d && g && f && // Censored: the dollar amount is redacted anyway, so promote the real
-    // percent change to the big slot and drop the footer line entirely.
-    /* @__PURE__ */ N.jsx(
-      "div",
-      {
-        className: `stat-value ${b && !n.flow ? g.delta >= 0 ? "up" : "down" : ""}`,
-        children: b && !n.flow ? zu(g.delta) : Co
-      }
-    ),
-    !d && g && !f && /* @__PURE__ */ N.jsxs(N.Fragment, { children: [
-      /* @__PURE__ */ N.jsx("div", { className: "stat-value", children: or(g.last) }),
-      b && /* @__PURE__ */ N.jsxs("div", { className: "stat-delta", children: [
-        /* @__PURE__ */ N.jsxs("span", { className: `chip ${g.diff >= 0 ? "up" : "down"}`, children: [
-          _b(g.diff),
-          !n.flow && ` (${zu(g.delta)})`
+    /* @__PURE__ */ N.jsxs("div", { className: _ ? "stat-inline" : "stat-body", children: [
+      !d && g && f && // Censored: the dollar amount is redacted anyway, so promote the real
+      // percent change to the big slot and drop the footer line entirely.
+      /* @__PURE__ */ N.jsx(
+        "div",
+        {
+          className: `stat-value ${b && !n.flow ? g.delta >= 0 ? "up" : "down" : ""}`,
+          children: b && !n.flow ? zu(g.delta) : Co
+        }
+      ),
+      !d && g && !f && /* @__PURE__ */ N.jsxs(N.Fragment, { children: [
+        /* @__PURE__ */ N.jsx("div", { className: "stat-value", children: or(g.last) }),
+        b && /* @__PURE__ */ N.jsxs("div", { className: "stat-delta", children: [
+          /* @__PURE__ */ N.jsxs("span", { className: `chip ${g.diff >= 0 ? "up" : "down"}`, children: [
+            _b(g.diff),
+            !n.flow && ` (${zu(g.delta)})`
+          ] }),
+          /* @__PURE__ */ N.jsxs("span", { children: [
+            "over ",
+            r
+          ] })
         ] }),
-        /* @__PURE__ */ N.jsxs("span", { children: [
-          "over ",
-          r
-        ] })
-      ] }),
-      t.show_composition !== !1 && /* @__PURE__ */ N.jsx(H$, { parts: g.parts })
+        t.show_composition !== !1 && /* @__PURE__ */ N.jsx(H$, { parts: g.parts })
+      ] })
     ] })
   ] });
 }
@@ -31124,16 +31126,14 @@ function $X(e) {
      out as a column so the chart takes the remaining height when the card
      is resized. In a masonry view the cell is auto-height and this resolves
      to content height. Other cards keep their content height. */
-  :host([data-fill]) { height: 100%; }
-  .mount.fill { height: 100%; }
-  .mount.fill .card {
+  :host { height: 100%; }
+  .mount { height: 100%; }
+  .card {
+    position: relative;
     display: flex;
     flex-direction: column;
     height: 100%;
     min-height: 0;
-  }
-  .card {
-    position: relative;
     /* Own stacking context so the ambient layer's z-index -1 sits between
        the card background and the content instead of under the page. */
     isolation: isolate;
@@ -31166,6 +31166,26 @@ function $X(e) {
     min-height: 0;
     position: relative;
   }
+  /* Lists (accounts, spending): top-aligned, scroll inside a short cell. */
+  .body-scroll {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: auto;
+  }
+  /* Drawings (bills calendar, card cycle): the SVG scales to the height
+     the cell leaves it; the strip/labels keep their size. */
+  .body-fill {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  .body-fill > .spend-cal-svg,
+  .body-fill .spend-card-row > .spend-cal-svg { flex: 1 1 auto; min-height: 0; }
+  .body-fill .spend-card-row { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; }
+  /* Stat card: the number sits in the middle of whatever height it gets. */
+  .stat-inline { display: contents; }
+  .stat-body { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; justify-content: center; }
   .ambient::after {
     content: "";
     position: absolute;
@@ -31298,7 +31318,7 @@ function $X(e) {
   /* Banner layout: everything on one row. The header keeps its place at
      the left (title) and right (lock), the number and chip sit between,
      and the composition bar takes whatever width is left. */
-  .stat-banner { padding: 10px 16px; display: flex; align-items: center; flex-wrap: wrap; gap: 6px 18px; }
+  .stat-banner { padding: 10px 16px; display: flex; flex-direction: row; align-items: center; align-content: center; flex-wrap: wrap; gap: 6px 18px; }
   .stat-banner .head { margin: 0; flex: none; display: contents; }
   .stat-banner .head h2 { flex: none; order: 0; }
   .stat-banner .head .head-right { order: 10; margin-left: auto; }
@@ -31583,12 +31603,13 @@ function Ei(e) {
     getCardSize() {
       return e.size;
     }
-    // Sections view, chart cards only: the default cell is the masonry size
-    // and the card can be dragged down to three rows; the chart area flexes
-    // to whatever height the cell gives it. Other cards leave HA's own
-    // sizing alone (content height).
+    // Sections view: the default cell is the masonry size; every card fills
+    // its cell and its body decides what to do with the height (charts and
+    // drawings scale, lists scroll, the stat number centres).
     getGridOptions() {
-      return e.fill ? { columns: "full", rows: e.size, min_rows: 3, min_columns: 6 } : {};
+      var f;
+      const c = ((f = e.grid) == null ? void 0 : f.call(e, this._config)) ?? { rows: e.size, minRows: 2 };
+      return { rows: c.rows, min_rows: c.minRows };
     }
     static getConfigElement() {
       return document.createElement(`${e.tag}-editor`);
@@ -31600,7 +31621,7 @@ function Ei(e) {
       if (!this._config || !this._hass || !this.isConnected) return;
       this.shadowRoot || this.attachShadow({ mode: "open" });
       const c = this.shadowRoot;
-      this._style || (this._style = document.createElement("style"), c.appendChild(this._style)), this._style.textContent = $X(this._config.theme ?? "netwrth"), this._mount || (this._mount = document.createElement("div"), this._mount.className = e.fill ? "mount fill" : "mount", e.fill && this.setAttribute("data-fill", ""), c.appendChild(this._mount), this._overlay = document.createElement("div"), this._overlay.className = "overlay", this._overlay.setAttribute("popover", "manual"), c.appendChild(this._overlay), this._root = OX.createRoot(this._mount));
+      this._style || (this._style = document.createElement("style"), c.appendChild(this._style)), this._style.textContent = $X(this._config.theme ?? "netwrth"), this._mount || (this._mount = document.createElement("div"), this._mount.className = "mount", c.appendChild(this._mount), this._overlay = document.createElement("div"), this._overlay.className = "overlay", this._overlay.setAttribute("popover", "manual"), c.appendChild(this._overlay), this._root = OX.createRoot(this._mount));
       const f = e.component, d = this._config.demo ? PX() : this._hass;
       this._root.render(
         /* @__PURE__ */ N.jsx(W0.Provider, { value: this._overlay ?? null, children: /* @__PURE__ */ N.jsx(f, { hass: d, config: this._config }, JSON.stringify(this._config)) })
@@ -31764,7 +31785,8 @@ Ei({
   ],
   stub: { view: "all", range: "6m" },
   size: 6,
-  fill: !0
+  grid: () => ({ rows: 6, minRows: 3 })
+  // chart needs ~100px to read
 });
 Ei({
   tag: "netwrth-flow-card",
@@ -31786,7 +31808,8 @@ Ei({
   ],
   stub: { range: "3m" },
   size: 6,
-  fill: !0
+  grid: () => ({ rows: 6, minRows: 3 })
+  // chart needs ~100px to read
 });
 Ei({
   tag: "netwrth-stat-card",
@@ -31823,7 +31846,11 @@ Ei({
     Ci
   ],
   stub: { view: "all", range: "1m" },
-  size: 2
+  size: 2,
+  // Banner: one slim row (HA grows the track to the content). Card: the
+  // number, chip and composition bar need four rows, three without the bar;
+  // it cannot go shorter without clipping, so the floor is the default.
+  grid: (e) => e.layout === "banner" ? { rows: 1, minRows: 1 } : e.show_composition === !1 ? { rows: 3, minRows: 3 } : { rows: 4, minRows: 4 }
 });
 Ei({
   tag: "netwrth-accounts-card",
@@ -31847,7 +31874,9 @@ Ei({
     Ci
   ],
   stub: { view: "all", range: "1m" },
-  size: 4
+  size: 4,
+  grid: () => ({ rows: 6, minRows: 3 })
+  // list scrolls below its natural height
 });
 Ei({
   tag: "netwrth-spending-card",
@@ -31873,7 +31902,9 @@ Ei({
     Ci
   ],
   stub: {},
-  size: 6
+  size: 6,
+  grid: () => ({ rows: 5, minRows: 3 })
+  // list scrolls below its natural height
 });
 Ei({
   tag: "netwrth-bills-card",
@@ -31882,7 +31913,9 @@ Ei({
   component: R$,
   schema: [Pi, Di, Ni, ji, Mi, Ci],
   stub: {},
-  size: 5
+  size: 5,
+  grid: () => ({ rows: 5, minRows: 3 })
+  // calendar drawing scales; 2 rows leaves it a sliver
 });
 Ei({
   tag: "netwrth-cardcycle-card",
@@ -31891,7 +31924,9 @@ Ei({
   component: z$,
   schema: [Pi, Di, Ni, ji, Mi, Ci],
   stub: {},
-  size: 4
+  size: 4,
+  grid: () => ({ rows: 4, minRows: 3 })
+  // cycle drawing scales; 2 rows leaves nothing
 });
 console.info("%c netwrth cards %c loaded", "background:#60a5fa;color:#0b0f17;border-radius:3px 0 0 3px;padding:1px 4px", "background:#17202f;color:#e6edf7;border-radius:0 3px 3px 0;padding:1px 4px");
 export {

@@ -211,6 +211,7 @@ export default function CardCycleCard({
           ))}
         </div>
       )}
+      <div className="body-fill">
       {!error &&
         data &&
         visible.map(({ card, line, recon, spent, paid, payments }) => {
@@ -371,6 +372,7 @@ export default function CardCycleCard({
             </div>
           );
         })}
+      </div>
       {hover && (
         <Overlay>
         <div

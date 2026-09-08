@@ -219,7 +219,7 @@ export default function SpendingCard({
       {error && <div className="error-box">{error}</div>}
       {!error && !summary && <div className="status">Loading…</div>}
       {!error && summary && (
-        <>
+        <div className="body-scroll">
           {config.show_stats !== false && (
             <div className="spend-stats">
               <div className="spend-stat">
@@ -319,7 +319,7 @@ export default function SpendingCard({
               </div>
             </div>
           )}
-        </>
+        </div>
       )}
     </div>
   );

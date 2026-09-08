@@ -76,16 +76,14 @@ export function cardCss(mode: ThemeMode): string {
      out as a column so the chart takes the remaining height when the card
      is resized. In a masonry view the cell is auto-height and this resolves
      to content height. Other cards keep their content height. */
-  :host([data-fill]) { height: 100%; }
-  .mount.fill { height: 100%; }
-  .mount.fill .card {
+  :host { height: 100%; }
+  .mount { height: 100%; }
+  .card {
+    position: relative;
     display: flex;
     flex-direction: column;
     height: 100%;
     min-height: 0;
-  }
-  .card {
-    position: relative;
     /* Own stacking context so the ambient layer's z-index -1 sits between
        the card background and the content instead of under the page. */
     isolation: isolate;
@@ -118,6 +116,26 @@ export function cardCss(mode: ThemeMode): string {
     min-height: 0;
     position: relative;
   }
+  /* Lists (accounts, spending): top-aligned, scroll inside a short cell. */
+  .body-scroll {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: auto;
+  }
+  /* Drawings (bills calendar, card cycle): the SVG scales to the height
+     the cell leaves it; the strip/labels keep their size. */
+  .body-fill {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  .body-fill > .spend-cal-svg,
+  .body-fill .spend-card-row > .spend-cal-svg { flex: 1 1 auto; min-height: 0; }
+  .body-fill .spend-card-row { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; }
+  /* Stat card: the number sits in the middle of whatever height it gets. */
+  .stat-inline { display: contents; }
+  .stat-body { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; justify-content: center; }
   .ambient::after {
     content: "";
     position: absolute;
@@ -250,7 +268,7 @@ export function cardCss(mode: ThemeMode): string {
   /* Banner layout: everything on one row. The header keeps its place at
      the left (title) and right (lock), the number and chip sit between,
      and the composition bar takes whatever width is left. */
-  .stat-banner { padding: 10px 16px; display: flex; align-items: center; flex-wrap: wrap; gap: 6px 18px; }
+  .stat-banner { padding: 10px 16px; display: flex; flex-direction: row; align-items: center; align-content: center; flex-wrap: wrap; gap: 6px 18px; }
   .stat-banner .head { margin: 0; flex: none; display: contents; }
   .stat-banner .head h2 { flex: none; order: 0; }
   .stat-banner .head .head-right { order: 10; margin-left: auto; }

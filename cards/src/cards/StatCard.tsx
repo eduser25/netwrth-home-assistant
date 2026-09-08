@@ -155,6 +155,7 @@ export default function StatCard({
       </div>
       {error && <div className="error-box">{error}</div>}
       {!error && !stat && <div className="status">Loading…</div>}
+      <div className={banner ? "stat-inline" : "stat-body"}>
       {!error && stat && masked && (
         // Censored: the dollar amount is redacted anyway, so promote the real
         // percent change to the big slot and drop the footer line entirely.
@@ -181,6 +182,7 @@ export default function StatCard({
           {config.show_composition !== false && <Composition parts={stat.parts} />}
         </>
       )}
+      </div>
     </div>
   );
 }

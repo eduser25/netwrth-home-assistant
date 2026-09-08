@@ -125,7 +125,7 @@ defineCard({
   ],
   stub: { view: "all", range: "6m" },
   size: 6,
-  fill: true,
+  grid: () => ({ rows: 6, minRows: 3 }), // chart needs ~100px to read
 });
 
 defineCard({
@@ -148,7 +148,7 @@ defineCard({
   ],
   stub: { range: "3m" },
   size: 6,
-  fill: true,
+  grid: () => ({ rows: 6, minRows: 3 }), // chart needs ~100px to read
 });
 
 defineCard({
@@ -187,6 +187,15 @@ defineCard({
   ],
   stub: { view: "all", range: "1m" },
   size: 2,
+  // Banner: one slim row (HA grows the track to the content). Card: the
+  // number, chip and composition bar need four rows, three without the bar;
+  // it cannot go shorter without clipping, so the floor is the default.
+  grid: (c) =>
+    c.layout === "banner"
+      ? { rows: 1, minRows: 1 }
+      : c.show_composition === false
+        ? { rows: 3, minRows: 3 }
+        : { rows: 4, minRows: 4 },
 });
 
 defineCard({
@@ -212,6 +221,7 @@ defineCard({
   ],
   stub: { view: "all", range: "1m" },
   size: 4,
+  grid: () => ({ rows: 6, minRows: 3 }), // list scrolls below its natural height
 });
 
 // Spending cards (per-user feature on the netwrth side: accounts without it
@@ -242,6 +252,7 @@ defineCard({
   ],
   stub: {},
   size: 6,
+  grid: () => ({ rows: 5, minRows: 3 }), // list scrolls below its natural height
 });
 
 defineCard({
@@ -252,6 +263,7 @@ defineCard({
   schema: [titleField, entryField, concealField, themeField, backgroundField, demoField],
   stub: {},
   size: 5,
+  grid: () => ({ rows: 5, minRows: 3 }), // calendar drawing scales; 2 rows leaves it a sliver
 });
 
 defineCard({
@@ -262,6 +274,7 @@ defineCard({
   schema: [titleField, entryField, concealField, themeField, backgroundField, demoField],
   stub: {},
   size: 4,
+  grid: () => ({ rows: 4, minRows: 3 }), // cycle drawing scales; 2 rows leaves nothing
 });
 
 // The demo harness (cards/demo) drives cards with the same sample dataset.

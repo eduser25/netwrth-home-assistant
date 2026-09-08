@@ -16,9 +16,10 @@ export type CardDef = {
   schema: SchemaField[];
   stub: Record<string, unknown>;
   size: number;
-  // Fill the grid cell and let the body flex (chart cards). Everything else
-  // keeps its content height, so a banner stays a banner when resized.
-  fill?: boolean;
+  // Sections-view defaults: rows the card opens at and the floor it can be
+  // dragged down to (HA rows are 56px + 8px gap). A function gets the card's
+  // config, so a variant (the banner stat) can pick its own size.
+  grid?: (config: any) => { rows: number; minRows: number };
 };
 
 // Wraps a React card component as a Lovelace custom element: shadow DOM for
@@ -66,13 +67,12 @@ export function defineCard(def: CardDef): void {
       return def.size;
     }
 
-    // Sections view, chart cards only: the default cell is the masonry size
-    // and the card can be dragged down to three rows; the chart area flexes
-    // to whatever height the cell gives it. Other cards leave HA's own
-    // sizing alone (content height).
+    // Sections view: the default cell is the masonry size; every card fills
+    // its cell and its body decides what to do with the height (charts and
+    // drawings scale, lists scroll, the stat number centres).
     getGridOptions() {
-      if (!def.fill) return {};
-      return { columns: "full", rows: def.size, min_rows: 3, min_columns: 6 };
+      const g = def.grid?.(this._config) ?? { rows: def.size, minRows: 2 };
+      return { rows: g.rows, min_rows: g.minRows };
     }
 
     static getConfigElement() {
@@ -94,8 +94,7 @@ export function defineCard(def: CardDef): void {
       this._style.textContent = cardCss((this._config.theme as ThemeMode) ?? "netwrth");
       if (!this._mount) {
         this._mount = document.createElement("div");
-        this._mount.className = def.fill ? "mount fill" : "mount";
-        if (def.fill) this.setAttribute("data-fill", "");
+        this._mount.className = "mount";
         shadow.appendChild(this._mount);
         // Sibling of the card, outside its stacking context: PIN pad and
         // hover bubbles portal here so they float over neighbouring cards.
