@@ -15,7 +15,7 @@
 
 ## Install
 
-1. **HACS** → ⋮ → *Custom repositories* → add `https://github.com/eduser25/netwrth-hacs` as **Integration**, install, restart.
+1. **HACS** → ⋮ → *Custom repositories* → add `https://github.com/eduser25/netwrth-home-assistant` as **Integration**, install, restart.
 2. **netwrth** → *Settings → Integrations → New API key*. Two scopes:
    - `censored only` — can never see real amounts, only percentages. No PIN. Good for wall tablets — but note: if your netwrth account has spending analysis, this scope does see spending *metadata* (merchant names, dates, themes, recurring streams); only the dollars stay hidden.
    - `full access` — still starts censored; real amounts appear only after a PIN reveal, and auto-conceal after a timer.

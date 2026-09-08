@@ -11,10 +11,10 @@
     "frontend",
     "lovelace"
   ],
-  "documentation": "https://github.com/eduser25/netwrth-hacs",
+  "documentation": "https://github.com/eduser25/netwrth-home-assistant",
   "integration_type": "service",
   "iot_class": "cloud_polling",
-  "issue_tracker": "https://github.com/eduser25/netwrth-hacs/issues",
+  "issue_tracker": "https://github.com/eduser25/netwrth-home-assistant/issues",
   "requirements": [],
-  "version": "0.4.2"
+  "version": "0.4.3"
 }

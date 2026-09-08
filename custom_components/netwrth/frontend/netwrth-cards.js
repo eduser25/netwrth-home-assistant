@@ -31630,7 +31630,7 @@ function Ei(e) {
     name: e.name,
     description: e.description,
     preview: !1,
-    documentationURL: "https://github.com/eduser25/netwrth-hacs"
+    documentationURL: "https://github.com/eduser25/netwrth-home-assistant"
   });
 }
 const ji = {

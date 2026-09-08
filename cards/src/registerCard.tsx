@@ -177,6 +177,6 @@ export function defineCard(def: CardDef): void {
     name: def.name,
     description: def.description,
     preview: false,
-    documentationURL: "https://github.com/eduser25/netwrth-hacs",
+    documentationURL: "https://github.com/eduser25/netwrth-home-assistant",
   });
 }
