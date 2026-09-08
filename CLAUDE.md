@@ -1,4 +1,4 @@
-# netwrth-hacs
+# netwrth-home-assistant (local dir: netwrth-hacs)
 
 Home Assistant integration (`custom_components/netwrth/`) + React/Recharts Lovelace cards
 (`cards/`) for the netwrth net-worth tracker. Amounts are censored server-side; the cards
