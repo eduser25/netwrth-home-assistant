@@ -1,6 +1,7 @@
 import AccountsCard from "./cards/AccountsCard";
 import BillsCard from "./cards/BillsCard";
 import CardCycleCard from "./cards/CardCycleCard";
+import CashFlowCard from "./cards/CashFlowCard";
 import SpendingCard from "./cards/SpendingCard";
 import StatCard from "./cards/StatCard";
 import WorthCard from "./cards/WorthCard";
@@ -275,6 +276,34 @@ defineCard({
   stub: {},
   size: 4,
   grid: () => ({ rows: 4, minRows: 3 }), // cycle drawing scales; 2 rows leaves nothing
+});
+
+defineCard({
+  tag: "netwrth-cashflow-card",
+  name: "netwrth cash flow",
+  description: "Where the month's money came from and went: income → cash → spending, debt, left over.",
+  component: CashFlowCard,
+  schema: [
+    titleField,
+    entryField,
+    {
+      name: "month_offset",
+      label: "Opening month (0 = this month, 1 = last month, …)",
+      selector: { number: { min: 0, max: 24, mode: "box" } },
+    },
+    {
+      name: "show_month_selector",
+      label: "Show month selector",
+      selector: { boolean: {} },
+    },
+    concealField,
+    themeField,
+    backgroundField,
+    demoField,
+  ],
+  stub: {},
+  size: 6,
+  grid: () => ({ rows: 5, minRows: 4 }), // Sankey scales; below 4 rows the bands turn to threads
 });
 
 // The demo harness (cards/demo) drives cards with the same sample dataset.

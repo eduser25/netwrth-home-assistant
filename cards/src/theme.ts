@@ -522,5 +522,10 @@ export function cardCss(mode: ThemeMode): string {
   .spend-bubble-rows { margin: 8px 0 2px; }
   .spend-bubble-row { display: flex; justify-content: space-between; gap: 12px; padding: 2px 0; }
   .spend-hoverbubble-note { margin-top: 6px; font-size: 11px; line-height: 1.35; }
+  /* cash-flow Sankey: the verdict line, then the drawing, which takes its
+     natural height as flex basis and stretches/squeezes with the cell. */
+  .cashflow-verdict { font-size: 13px; margin: -4px 0 6px; }
+  .cashflow-fill { flex: 1 1 auto; min-height: 0; position: relative; }
+  .cashflow-box { position: absolute; inset: 0; overflow: hidden; }
   `;
 }

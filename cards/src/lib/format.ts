@@ -47,3 +47,13 @@ export function shortDate(ts: number, withTime = false): string {
     ...(withTime ? { hour: "numeric", minute: "2-digit" } : {}),
   });
 }
+
+// Share of a whole as a percent string (vendored from the app's
+// lib/format.ts). Ratios are scale-invariant, so this stays honest under
+// censor mode: censored amounts arrive rescaled, and every share survives.
+export function share(part: number, whole: number): string {
+  if (!(whole > 0)) return "–";
+  const s = (part / whole) * 100;
+  if (!isFinite(s)) return "–";
+  return `${Math.abs(s) < 10 ? s.toFixed(1) : String(Math.round(s))}%`;
+}

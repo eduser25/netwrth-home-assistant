@@ -148,6 +148,21 @@ Per credit card (tabs when you have several): the balance's climb and payment dr
 type: custom:netwrth-cardcycle-card
 ```
 
+### Cash flow — `netwrth-cashflow-card`
+
+The month as a Sankey, like the web dashboard's cash-flow card: income sources (and *From savings* when spending outran income) flow into Cash, which fans out into spending themes, debt payments and what was *Left over*. Credit-card payments count once — the purchases they settle already show as spending — and loan-side mirrors of a payment are dropped. Censored, every label, hover readout and the verdict line read as a share of income ("Kept 49% of income"); dollars appear only after a reveal. Needs spending analysis, like the other spending cards.
+
+<p align="center">
+  <img src="docs/img/cashflow.png" alt="cash flow card" width="560">
+  <img src="docs/img/cashflow-censored.png" alt="cash flow card censored" width="560">
+</p>
+
+```yaml
+type: custom:netwrth-cashflow-card
+month_offset: 0             # optional: open on this month (1 = last month, …)
+show_month_selector: false  # optional: pin the month, hide the stepper
+```
+
 ## Sensors
 
 Censor-safe and always created:
