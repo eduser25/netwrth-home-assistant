@@ -57,6 +57,15 @@ const TXN_DEFS: TxnDef[] = [
   [7, 27, 26.6, "shopping", "Paper & Twine"],
   [8, 4, 210.45, "travel", "Skyway Airlines"],
   [8, 14, -180, "debt", "Payment - Thank You"],
+  // Checking-side legs of the card payments above (paired away by the cash
+  // flow model), a car-loan payment with its loan-side mirror (the
+  // payment counts once), and two smaller income sources.
+  [1, 16, 650, "debt", "Ridgeline Card Payment"],
+  [1, 14, 180, "debt", "Harbor CU Card Payment"],
+  [1, 12, 320, "debt", "Harbor CU Auto Loan"],
+  [9, 12, -320, "debt", "Payment Received"],
+  [1, 9, -420, "income", "Oakline Studio"],
+  [2, 1, -38.5, "income", "Ridgeline Interest"],
 ];
 
 // Credit cards follow their own transactions instead of a random walk: the
